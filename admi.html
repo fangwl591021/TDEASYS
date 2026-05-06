@@ -277,10 +277,15 @@
                         <div class="section-title !mb-4 text-orange-700 border-orange-500 mt-8">官方匯款帳號設定</div>
                         <div class="mb-8"><label class="input-label">匯款資訊 (將顯示於前台結帳頁面)</label><textarea v-model="sysSettings.remittance_info" class="input-field h-32 resize-none leading-relaxed"></textarea></div>
                         
-                        <div class="section-title !mb-4 text-purple-700 border-purple-500 mt-8">前台體驗開關</div>
-                        <div class="mb-8 flex items-center justify-between bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div class="section-title !mb-4 text-purple-700 border-purple-500 mt-8">進階功能與體驗設定</div>
+                        <div class="mb-4 flex items-center justify-between bg-slate-50 p-4 rounded-xl border border-slate-100">
                             <div><div class="font-bold text-slate-700 text-sm">開放學員自行取消報名</div><div class="text-xs text-slate-400 mt-1">啟用後，學員可在「待付款」訂單下方看見取消按鈕</div></div>
                             <select v-model="sysSettings.allow_cancel_order" class="input-field !w-32 !py-2 !text-sm font-bold bg-white"><option value="true">🟢 啟用</option><option value="false">🔴 停用</option></select>
+                        </div>
+                        <div class="mb-8 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <label class="input-label">第二 Webhook 網址 (雙 Webhook 模式)</label>
+                            <div class="text-[13px] font-bold text-slate-500 mt-1 mb-3">若您有使用 Make.com、Zapier 或其他對話機器人，請將該平台的 Webhook 網址填入此處。系統會自動將 LINE 收到的所有訊息「無損且不延遲」地轉發給第二平台，實現雙機並行運作！</div>
+                            <input type="text" v-model="sysSettings.second_webhook_url" class="input-field font-mono text-sm" placeholder="https://hook.us1.make.com/...">
                         </div>
 
                         <button @click="saveSettings" :disabled="isLoading" class="btn-green-main w-full py-4 text-[16px] mt-4"><i v-if="isLoading" class="fas fa-spinner fa-spin"></i> 確認儲存並同步雲端參數</button>
