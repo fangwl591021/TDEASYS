@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TDEA管理平台</title>
-    <!-- Version: 2026.05.08.Admin_Course_Only -->
+    <!-- Version: 2026.05.08.Admin_Course_Only_Fix_V2 -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.prod.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -52,6 +52,7 @@
 </head>
 <body>
     <div id="app" v-cloak>
+        <!-- 登入介面 -->
         <div v-if="!isAuthenticated" class="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4 relative text-center">
             <div class="max-w-[360px] w-full bg-white rounded-2xl shadow-sm p-8 border border-slate-200 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1.5 bg-[#06C755]"></div>
@@ -75,6 +76,7 @@
             </div>
         </div>
 
+        <!-- 主管理介面 -->
         <div v-else class="flex min-h-screen">
             <aside class="sidebar">
                 <div class="sidebar-brand">TDEA管理平台</div>
@@ -114,6 +116,7 @@
                     </div>
                 </header>
 
+                <!-- Dashboard -->
                 <div v-if="view === 'dashboard'" class="p-6 animate-fade-in">
                     <div class="grid grid-cols-3 gap-4 mb-6">
                         <div v-for="(val, label) in { '實收總額': '$'+totalRevenue, '系統會員': users.length, '上架課程': courses.length }" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
@@ -138,12 +141,14 @@
                     </div>
                 </div>
 
+                <!-- Calendar -->
                 <div v-if="view === 'calendar'" class="animate-fade-in p-6 h-[calc(100vh-100px)]">
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm w-full h-full overflow-hidden">
                         <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FTaipei&showPrint=0&src=ZDUyMDgyNzIzOGMyYjI0MDE5MTYxY2E1N2FiOTI1YjI3N2E4YmNlNjE5YTFkYzI3NzViZjc4MGVkNzMwOGI3NEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23f09300" style="border-width:0" width="100%" height="100%" frameborder="0" scrolling="yes"></iframe>
                     </div>
                 </div>
 
+                <!-- Members -->
                 <div v-if="view === 'members'" class="animate-fade-in">
                     <div class="px-6 py-4 flex gap-3 border-b border-slate-100 bg-white">
                         <div class="relative w-full max-w-sm"><i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i><input type="text" v-model="memberSearch" placeholder="搜尋姓名、電話、ID..." class="w-full border border-slate-200 rounded px-9 py-2 text-sm font-bold outline-none focus:border-[#06C755]"></div>
@@ -164,6 +169,7 @@
                     </div>
                 </div>
 
+                <!-- Courses -->
                 <div v-if="view === 'courses'" class="animate-fade-in">
                     <div class="px-6 py-4 flex justify-between items-center bg-white border-b border-slate-100">
                         <div class="flex gap-3"><div class="relative w-72"><i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i><input type="text" v-model="courseSearchQuery" placeholder="搜尋課程內容..." class="w-full border border-slate-200 rounded px-9 py-2 text-sm font-bold outline-none focus:border-[#06C755]"></div></div>
@@ -185,6 +191,7 @@
                     </div>
                 </div>
 
+                <!-- Orders -->
                 <div v-if="view === 'orders'" class="animate-fade-in">
                     <div class="px-6 py-4 flex gap-3 border-b border-slate-100 bg-white">
                         <div class="relative w-full max-w-sm"><i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i><input type="text" v-model="orderSearch" placeholder="搜尋單號、姓名、電話、課程..." class="w-full border border-slate-200 rounded px-9 py-2 text-sm font-bold outline-none focus:border-[#06C755]"></div>
@@ -207,8 +214,10 @@
                     </div>
                 </div>
 
+                <!-- Rich Menu -->
                 <div v-if="view === 'richmenu'" class="h-[calc(100vh-73px)]"><iframe src="./menu.html" class="w-full h-full border-0"></iframe></div>
 
+                <!-- Flex Rules -->
                 <div v-if="view === 'flex_rules'" class="p-8 animate-fade-in">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl font-black text-slate-800">自動回覆與會員專區卡片</h2>
@@ -243,6 +252,7 @@
                     </div>
                 </div>
                 
+                <!-- Settings -->
                 <div v-if="view === 'settings'" class="p-8 animate-fade-in max-w-4xl mx-auto space-y-8">
                     <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
                         <div class="section-title !mb-6">首頁頂部橫幅 (Banner) 高效上傳 (Cloudflare R2)</div>
@@ -320,12 +330,12 @@
                                 <code class="text-xs bg-slate-50 px-2 py-1 rounded border border-slate-100 font-mono flex-1 mx-3 text-[#06C755] font-black truncate">每日簽到送紅包</code>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </main>
         </div>
 
+        <!-- Flex Rule Modal -->
         <div v-if="editingFlexRule" class="modal-mask" @click.self="editingFlexRule = null" style="z-index: 1000;">
             <div class="modal-body modal-body-lg p-0 animate-fade-in !max-w-[700px] !rounded-xl bg-white shadow-2xl">
                 <div class="px-6 py-5 flex justify-between items-center bg-white border-b border-slate-100 shadow-sm z-10 relative">
@@ -333,7 +343,6 @@
                     <button @click="editingFlexRule = null" class="w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition"><i class="fas fa-times text-xl"></i></button>
                 </div>
                 <div class="p-8 overflow-y-auto max-h-[75vh] bg-slate-50 custom-scrollbar space-y-6">
-                    
                     <div v-if="editingFlexRule.replyType === 'FLEX'" class="bg-indigo-50 border border-indigo-100 rounded-xl p-5 mb-2 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
                         <div>
                             <div class="font-black text-indigo-700 text-[15px] mb-1"><i class="fas fa-magic mr-1.5"></i> 快速套用範本</div>
@@ -370,7 +379,7 @@
                             <label class="block text-[14px] font-bold text-slate-700">回覆內容 (Payload) <span class="text-red-500">*</span></label>
                             <a v-if="editingFlexRule.replyType === 'FLEX'" href="https://developers.line.biz/flex-simulator/" target="_blank" class="text-[12px] text-blue-500 hover:text-blue-700 font-bold transition flex items-center gap-1"><i class="fas fa-external-link-alt"></i> 開啟 LINE Flex Simulator</a>
                         </div>
-                        <textarea v-model="editingFlexRule.payload" rows="12" class="input-field bg-slate-50 font-mono text-[12px] leading-relaxed resize-y" :placeholder="editingFlexRule.replyType === 'FLEX' ? '請將 Simulator 右上角的 JSON (View as JSON) 複製貼上於此...\n\n(系統支援自動補齊，您只需貼上 contents 陣列內的物件即可)' : '請輸入要回覆的純文字訊息...'"></textarea>
+                        <textarea v-model="editingFlexRule.payload" rows="12" class="input-field bg-slate-50 font-mono text-[12px] leading-relaxed resize-y" :placeholder="editingFlexRule.replyType === 'FLEX' ? '請將 Simulator 右上角的 JSON (View as JSON) 複製貼上於此...' : '請輸入要回覆的純文字訊息...'"></textarea>
                     </div>
                 </div>
                 <div class="px-8 py-5 bg-white flex justify-end items-center gap-4 border-t border-slate-200 rounded-b-xl z-10 relative">
@@ -380,6 +389,7 @@
             </div>
         </div>
 
+        <!-- Course Edit Modal -->
         <div v-if="editingCourse" class="modal-mask" @click.self="editingCourse = null">
             <div class="modal-body modal-body-lg p-0 animate-fade-in !max-w-[900px] !rounded-xl bg-white">
                 <div class="px-6 py-5 flex justify-between items-center bg-white border-b border-slate-100">
@@ -423,6 +433,7 @@
             </div>
         </div>
 
+        <!-- Course Orders List Modal -->
         <div v-if="showOrdersModal" class="modal-mask" @click.self="showOrdersModal = false">
             <div class="modal-body modal-body-lg p-0 animate-fade-in !max-w-[1000px] !rounded-xl bg-white">
                 <div class="px-6 py-5 flex justify-between items-center bg-white border-b border-slate-100">
@@ -451,6 +462,7 @@
             </div>
         </div>
 
+        <!-- Order Edit Modal -->
         <div v-if="editingOrder" class="modal-mask" @click.self="editingOrder = null">
             <div class="modal-body p-0 animate-fade-in !max-w-[500px] !rounded-xl bg-white">
                 <div class="px-6 py-5 flex justify-between items-center bg-white border-b border-slate-100"><h3 class="text-[21px] font-black text-slate-800">訂單狀態維護：{{ editingOrder?.orderId }}</h3><button @click="editingOrder = null" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times text-2xl"></i></button></div>
@@ -463,6 +475,7 @@
             </div>
         </div>
 
+        <!-- Member Detail Modal -->
         <div v-if="activeMember" class="modal-mask" @click.self="activeMember = null" style="z-index: 1000;">
             <div class="modal-body modal-body-lg p-0 animate-fade-in !max-w-[1000px] !rounded-xl bg-white shadow-2xl">
                 <div class="px-6 py-5 flex justify-between items-center bg-white border-b border-slate-100 shadow-sm z-10 relative"><h3 class="text-[19px] font-black text-slate-800 flex items-center gap-2"><i class="fas fa-address-card text-[#06C755]"></i> 會員檔案：{{ activeMember?.name }} <span class="text-[13px] font-mono font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg border border-slate-200 ml-3">UID: {{ activeMember?.userId }}</span></h3><button @click="activeMember = null" class="w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition"><i class="fas fa-times text-xl"></i></button></div>
@@ -492,6 +505,7 @@
             </div>
         </div>
 
+        <!-- Point Action Modal -->
         <div v-if="editingPointAction" class="modal-mask" style="z-index: 1100;" @click.self="editingPointAction = null">
             <div class="modal-body p-8 animate-fade-in bg-white rounded-2xl max-w-sm shadow-2xl border border-slate-100"><h3 class="text-xl font-black mb-6 flex items-center gap-2" :class="editingPointAction.type==='MANUAL_ADD'?'text-[#06C755]':'text-red-500'"><i class="fas" :class="editingPointAction.type==='MANUAL_ADD'?'fa-arrow-circle-up':'fa-arrow-circle-down'"></i> {{ editingPointAction.type==='MANUAL_ADD' ? '手動贈送點數' : '手動扣除點數' }}</h3><div class="space-y-5"><div><label class="input-label text-slate-500">異動金額 (點)</label><input type="number" v-model.number="editingPointAction.amount" class="input-field text-3xl font-black text-center text-slate-800 bg-slate-50" placeholder="0"></div><div><label class="input-label text-slate-500">原因 / 備註</label><input type="text" v-model="editingPointAction.reason" class="input-field font-bold" placeholder="請填寫原因..."></div><div class="flex gap-3 pt-5 border-t border-slate-100"><button @click="editingPointAction = null" class="flex-1 py-3.5 bg-slate-100 text-slate-500 rounded-xl font-bold hover:bg-slate-200 transition">取消</button><button @click="submitPointAction" :disabled="isLoading" class="flex-1 py-3.5 text-white rounded-xl font-bold shadow-md active:scale-95 transition flex justify-center items-center gap-2" :class="editingPointAction.type==='MANUAL_ADD'?'bg-[#06C755] hover:bg-[#05a647]':'bg-red-500 hover:bg-red-600'"><i v-if="isLoading" class="fas fa-spinner fa-spin"></i>確認執行</button></div></div></div>
         </div>
@@ -506,7 +520,7 @@
             }
 
             const { createApp, ref, computed, onMounted } = Vue;
-            const WORKER_URL = 'https://action.fangwl591021.workers.dev/';
+            const WORKER_URL = 'https://tdeasys.fangwl591021.workers.dev/';
             const CACHE_VERSION = 'v288'; 
             const CACHE_KEY = `act_admin_cache_${CACHE_VERSION}`;
 
@@ -533,12 +547,14 @@
                     
                     const isImageUploading = ref(false);
                     const editingCourse = ref(null);
+                    const activeEnrollmentCourse = ref(null);
+                    const courseOrders = ref([]);
                     const editingOrder = ref(null);
                     const editingFlexRule = ref(null); 
 
                     const showOrdersModal = ref(false);
                     const selectedCourseForOrders = ref(null);
-                    const selectedCourseOrders = ref([]);
+                    const currentCourseOrders = ref([]);
 
                     const activeMember = ref(null);
                     const activeMemberPoints = ref({ balance: 0, logs: [] });
@@ -725,10 +741,10 @@
 
                     const courseStatsFiltered = computed(() => {
                         return courses.value.filter(c => c).map(c => {
-                            const courseOrders = orders.value.filter(o => o && (o.courseId === c.id || o.courseId === c.name) && o.status !== 'CANCELLED');
-                            const totalOrders = courseOrders.length;
+                            const courseOrdersList = orders.value.filter(o => o && (o.courseId === c.id || o.courseId === c.name) && o.status !== 'CANCELLED');
+                            const totalOrders = courseOrdersList.length;
                             let paidAmount = 0, pendingAmount = 0;
-                            courseOrders.forEach(o => {
+                            courseOrdersList.forEach(o => {
                                 const amt = Number(String(o.amount).replace(/[^0-9.]/g, '')) || 0;
                                 if (o.status === 'PAID') paidAmount += amt;
                                 else pendingAmount += amt;
@@ -802,7 +818,7 @@
                         const today = new Date().toLocaleString('zh-TW', {timeZone: 'Asia/Taipei', hour12: false}).split(' ')[0].replace(/\//g, '-');
 
                         link.setAttribute("href", url);
-                        link.setAttribute("download", `宏學_業績報表_${today}.csv`);
+                        link.setAttribute("download", `TDEA_業績報表_${today}.csv`);
                         document.body.appendChild(link);
                         link.click();
                         
@@ -878,7 +894,7 @@
                     };
 
                     const openNewCourseModal = () => {
-                        editingCourse.value = { id: 'NEW_' + Date.now(), name: '', priceText: '', type: '一般', price: 0, capacity: 0, enrolled: 0, startDate: '', endDate: '', timeSlotType: '', publishStartDate: '', publishEndDate: '', instructor: '', location: '', description: '', image: '', isPublished: true, isRegistrationOpen: true, discountRule: 'NONE', paymentMethod: 'ALL', targetTiers: [] };
+                        editingCourse.value = { id: 'NEW_' + Date.now(), name: '', priceText: '', type: '一般', price: 0, capacity: 0, enrolled: 0, startDate: '', endDate: '', timeSlotType: '', publishStartDate: '', publishEndDate: '', instructor: '', location: '', description: '', image: '', isPublished: true, isRegistrationOpen: true, discountRule: 'NONE', paymentMethod: 'REMITTANCE', targetTiers: [] };
                     };
 
                     const openEditModal = (c) => { editingCourse.value = JSON.parse(JSON.stringify(c)); };
@@ -931,14 +947,30 @@
                         } catch(e) { console.error(e); alert('儲存失敗：' + e.message); } finally { isLoading.value = false; }
                     };
 
+                    const openEnrollments = (c) => {
+                        activeEnrollmentCourse.value = JSON.parse(JSON.stringify(c));
+                        courseOrders.value = orders.value.filter(o => o && (o.courseId === c.id || o.courseId === c.name) && o.status !== 'CANCELLED');
+                    };
+                    
                     const openCourseOrdersModal = (course) => {
                         selectedCourseForOrders.value = course;
-                        selectedCourseOrders.value = orders.value.filter(o => o && (o.courseId === course.id || o.courseId === course.name) && o.status !== 'CANCELLED').sort((a, b) => {
+                        currentCourseOrders.value = orders.value.filter(o => o && (o.courseId === course.id || o.courseId === course.name) && o.status !== 'CANCELLED').sort((a, b) => {
                             const tA = new Date(String(a.createdAt).replace(/-/g, '/')).getTime() || 0;
                             const tB = new Date(String(b.createdAt).replace(/-/g, '/')).getTime() || 0;
                             return tB - tA;
                         });
                         showOrdersModal.value = true;
+                    };
+
+                    const generateCheckinLink = async (c) => {
+                        if(!c.checkinPwd) return alert('請先填寫密碼');
+                        isLoading.value = true;
+                        try { await callApi('ADMIN_SET_CHECKIN_PWD', { courseId: c.id, checkinPwd: c.checkinPwd }); alert('簽到密碼更新成功'); } catch(e) { console.error(e); } finally { isLoading.value = false; }
+                    };
+
+                    const updateOrderAttendance = async (o) => {
+                        isLoading.value = true;
+                        try { await callApi('ADMIN_UPDATE_ORDER', { orderId: o.orderId, attendance: o.attendance }); } catch(e) { console.error(e); } finally { isLoading.value = false; }
                     };
 
                     const openOrderEditModal = (o) => { editingOrder.value = JSON.parse(JSON.stringify(o)); };
@@ -1295,8 +1327,6 @@
                         alert("✅ 範本已成功載入！\n所有的按鈕連結已經自動換成了您的專屬 LIFF 網址。\n\n請確認內容無誤後，點擊右下角「儲存觸發規則」即可生效。");
                     };
 
-                    const currentCourseOrders = computed(() => selectedCourseOrders.value);
-
                     onMounted(() => { 
                         loadCache();
                         autoLineLogin(); 
@@ -1309,14 +1339,15 @@
                         memberSearch, filteredMembers, courseSearchQuery, filteredAdminCourses,
                         orderSearch, filteredOrders,
                         isImageUploading, editingCourse,
-                        editingOrder, editingFlexRule,
-                        showOrdersModal, selectedCourseForOrders, selectedCourseOrders, currentCourseOrders,
+                        activeEnrollmentCourse, courseOrders, editingOrder, editingFlexRule,
+                        showOrdersModal, selectedCourseForOrders, currentCourseOrders,
                         activeMember, activeMemberPoints, editingPointAction,
                         lineLogin, handleLogin, toggleGroup, switchView, logout, fetchData, forceSyncFromCloud,
                         triggerBackup, runHealthCheck, openMemberDetail, saveMemberDetail, deleteMember, openPointActionModal, submitPointAction,
                         openNewCourseModal, openEditModal, saveCourse, copyCourse, syncToCalendar,
-                        handleBannerUpload, saveSettings, openCourseOrdersModal,
-                        openOrderEditModal, saveOrderUpdate, getCourseName, formatPrice,
+                        handleBannerUpload, saveSettings, openEnrollments, openCourseOrdersModal,
+                        generateCheckinLink, updateOrderAttendance, openOrderEditModal, saveOrderUpdate,
+                        getCourseName, formatPrice,
                         downloadSalesReport, openEditFlexRule, saveFlexRule, deleteFlexRule, loadMemberCardTemplate
                     };
                 }
